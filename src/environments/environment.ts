@@ -5,6 +5,7 @@ export const environment = {
         storageBucket: '',
         apiKey: '',
         authDomain: '',
+        databaseURL: '',
         messagingSenderId: '',
     },
     production: false,
