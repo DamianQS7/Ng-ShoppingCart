@@ -1,0 +1,70 @@
+@let items = firebaseService.itemsToDisplay();
+@let groceriesQuantity = firebaseService.groceriesQuantity();
+@let veggiesQty = firebaseService.veggiesQuantity();
+@let pharmacyQty = firebaseService.pharmacyQuantity();
+@let image = sectionThemeService.currentTheme().image;
+@let btnColor = sectionThemeService.currentTheme().btnColor;
+@let bgColor = sectionThemeService.currentTheme().bgColor;
+@let currentCategory = firebaseService.currentCategory();
+@let navBtnColor = sectionThemeService.currentTheme().navColor;
+
+<div class="px-4 py-2  flex flex-col h-dvh items-center gap-4 overflow-y-auto" [class]="bgColor">
+    <img [src]="image" alt="" class="w-48 h-[300px] rounded-2xl  shadow-slate-900 mt-2 border-2 border-slate-700">
+    <input 
+        [formControl]="input"
+        type="text" 
+        placeholder="Next Item" 
+        class="border border-slate-400 px-2 py-1 rounded bg-neutral-50">
+    <button 
+        (click)="addItem()"
+        [class]="btnColor"
+        class=" py-1 px-4 flex text-slate-100 gap-1 rounded font-normal z-10 shadow shadow-slate-500 border border-slate-100 transition active:scale-90 active:bg-blue-600">
+        Add to Cart
+        <svg class="w-5 h-6 text-slate-100" aria-hidden="true" xmlns="http://www.w3.org/2000/svg" width="24" height="24" fill="none" viewBox="0 0 24 24">
+            <path stroke="currentColor" stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M5 4h1.5L9 16m0 0h8m-8 0a2 2 0 1 0 0 4 2 2 0 0 0 0-4Zm8 0a2 2 0 1 0 0 4 2 2 0 0 0 0-4Zm-8.5-3h9.25L19 7H7.312"/>
+          </svg>
+          
+    </button>
+    <ul class="flex flex-wrap list-none gap-2.5">
+        @for(item of items; track item[0]) {
+            <li class="grow bg-neutral-50 py-1 px-2 border border-slate-300 rounded-md text-center shadow-md shadow-slate-500 z-10" 
+                (click)="removeItem(item[0])">
+                {{ item[1].item }}
+            </li>
+        } @empty {
+            <p>No items to buy yet...👀</p>
+        }
+    </ul>
+</div>
+<!-- Navigation -->
+<nav class="fixed bottom-0 left-0 z-50 w-full h-16 bg-slate-900/50 border-t border-gray-200">
+    <div class="flex justify-between px-6 h-full max-w-lg font-medium mt-1">
+        <app-nav-tab 
+            [itemsQuantity]="groceriesQuantity" 
+            [buttonText]="'Groceries'"
+            (click)="changeCategory('groceries')"
+        >
+            <svg [class]="currentCategory === 'groceries' ? navBtnColor: 'text-slate-100'" class="w-5 h-6 mt-3" aria-hidden="true" xmlns="http://www.w3.org/2000/svg" fill="currentColor" viewBox="0 0 20 20">
+                <path d="m19.707 9.293-2-2-7-7a1 1 0 0 0-1.414 0l-7 7-2 2a1 1 0 0 0 1.414 1.414L2 10.414V18a2 2 0 0 0 2 2h3a1 1 0 0 0 1-1v-4a1 1 0 0 1 1-1h2a1 1 0 0 1 1 1v4a1 1 0 0 0 1 1h3a2 2 0 0 0 2-2v-7.586l.293.293a1 1 0 0 0 1.414-1.414Z"/>
+            </svg>
+        </app-nav-tab>
+        <app-nav-tab 
+            [itemsQuantity]="veggiesQty" 
+            [buttonText]="'Veggies'"
+            (click)="changeCategory('veggies')"
+        >
+            <svg [class]="currentCategory === 'veggies' ? navBtnColor: 'text-slate-100'" class="w-6 h-6 mt-3" aria-hidden="true" xmlns="http://www.w3.org/2000/svg" width="24" height="24" fill="currentColor" viewBox="0 0 24 24">
+                <path d="M17.537 12.625a4.421 4.421 0 0 0 2.684 4.047 10.96 10.96 0 0 1-1.384 2.845c-.834 1.218-1.7 2.432-3.062 2.457-1.34.025-1.77-.794-3.3-.794-1.531 0-2.01.769-3.275.82-1.316.049-2.317-1.318-3.158-2.532-1.72-2.484-3.032-7.017-1.27-10.077A4.9 4.9 0 0 1 8.91 6.884c1.292-.025 2.51.869 3.3.869.789 0 2.27-1.075 3.828-.917a4.67 4.67 0 0 1 3.66 1.984 4.524 4.524 0 0 0-2.16 3.805m-2.52-7.432A4.4 4.4 0 0 0 16.06 2a4.482 4.482 0 0 0-2.945 1.516 4.185 4.185 0 0 0-1.061 3.093 3.708 3.708 0 0 0 2.967-1.416Z"/>
+            </svg>
+        </app-nav-tab>
+        <app-nav-tab 
+            [itemsQuantity]="pharmacyQty" 
+            [buttonText]="'Pharmacy'"
+            (click)="changeCategory('pharmacy')"
+        >
+            <svg [class]="currentCategory === 'pharmacy' ? navBtnColor: 'text-slate-100'" class="w-6 h-6 mt-3" aria-hidden="true" xmlns="http://www.w3.org/2000/svg" width="24" height="24" fill="currentColor" viewBox="0 0 24 24">
+                <path fill-rule="evenodd" d="M14 7h-4v3a1 1 0 0 1-2 0V7H6a1 1 0 0 0-.997.923l-.917 11.924A2 2 0 0 0 6.08 22h11.84a2 2 0 0 0 1.994-2.153l-.917-11.924A1 1 0 0 0 18 7h-2v3a1 1 0 1 1-2 0V7Zm-2-3a2 2 0 0 0-2 2v1H8V6a4 4 0 0 1 8 0v1h-2V6a2 2 0 0 0-2-2Z" clip-rule="evenodd"/>
+            </svg>
+        </app-nav-tab>
+    </div>
+</nav>
