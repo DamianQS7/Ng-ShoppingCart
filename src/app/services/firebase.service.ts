@@ -16,6 +16,9 @@ export class FirebaseService {
   // Dependencies
   private readonly configService = inject(ConfigurationService);
 
+  constructor() {
+    console.log(this.configService.getFirebaseConfig());
+  }
   // Properties
   private category = signal<Category>('groceries')
   private readonly app: FirebaseApp = initializeApp(this.configService.getFirebaseConfig());
