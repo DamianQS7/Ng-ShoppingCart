@@ -13,7 +13,7 @@ const firebaseConfig = {
     storageBucket: environment.STORAGE_BUCKET,
     apiKey: environment.API_KEY,
     authDomain: environment.AUTH_DOMAIN,
-    databaseURL: environment.DATABASE_URL,
+    databaseURL: 'https://shoppinglist-9bd39-default-rtdb.firebaseio.com',
     messagingSenderId: environment.MESSAGING_SENDER_ID
   }
 
