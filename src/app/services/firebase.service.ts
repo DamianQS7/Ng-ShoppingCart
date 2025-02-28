@@ -1,4 +1,4 @@
-import { computed, Injectable, Signal, signal } from '@angular/core';
+import { computed, inject, Injectable, Signal, signal } from '@angular/core';
 import { toSignal } from '@angular/core/rxjs-interop';
 import { environment } from '../../environments/environment';
 import { FirebaseApp, initializeApp } from 'firebase/app';
@@ -6,15 +6,19 @@ import { Database, DatabaseReference, getDatabase, push, ref, remove } from 'fir
 import { object } from 'rxfire/database';
 import { map } from 'rxjs';
 import { Category, DatabaseItems } from '../types/types';
+import { ConfigurationService } from './configuration.service';
 
 @Injectable({
-  providedIn: 'root'
+  providedIn: 'root',
 })
 export class FirebaseService {
 
+  // Dependencies
+  private readonly configService = inject(ConfigurationService);
+
   // Properties
   private category = signal<Category>('groceries')
-  private readonly app: FirebaseApp = initializeApp(environment.firebase);
+  private readonly app: FirebaseApp = initializeApp(this.configService.getFirebaseConfig());
   private readonly database: Database = getDatabase(this.app);
   private readonly shoppingList: Signal<DatabaseReference> = computed(() => ref(this.database, "shoppingList"));
   
